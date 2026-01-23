@@ -1,0 +1,12 @@
+version: 2
+
+sources:
+  - name: erp
+    description: "Source de données TPCH Scale Factor 1 - Base de données d'exemple pour la formation dbt"
+    database: ODS_DWH_DEV
+    schema: erp
+    tables:
+      - name: customer
+        description: "Table des clients"
+      - name: orders
+      - name: lineitem

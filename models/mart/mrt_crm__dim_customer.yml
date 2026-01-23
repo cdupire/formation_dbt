@@ -1,0 +1,42 @@
+version: 2
+
+models:
+  - name: mrt_crm__dim_customer
+    columns:
+      - name: cle_client
+        tests:
+          - unique
+          - not_null
+      - name: nom_client
+        tests:
+          - not_null
+      - name: segment_marche
+        tests:
+          - accepted_values:
+              arguments:
+                values: ["AUTOMOBILE","BUILDING","MACHINERY","FURNITURE","HOUSEHOLD"]
+                severity: warn
+      - name: nombre_total_commandes
+        tests:
+          - not_null
+      - name: valeur_totale_commandes
+        tests:
+          - not_null
+      - name: dbt_loaded_at
+        tests:
+          - not_null
+    tests:
+      #je veux vérifier que la date de dernière commande est >= à la date de première commande
+      - dbt_utils.expression_is_true:
+          arguments:
+            expression: "date_derniere_commande >= date_premiere_commande"
+      #je veux vérifier que le mart contient exactement le même nombre de lignes que le stg :
+      - dbt_utils.equal_rowcount:
+          arguments:
+            compare_model: ref('stg_erp__customer')
+
+          # arguments:
+          # description: "Teste que la valeur par défaut '_' est bien présente et qu'une seule fois"
+          # value: 1
+          # row_condition: "tk_type_client = '-1'"
+          # severity: warn

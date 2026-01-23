@@ -1,0 +1,10 @@
+version: 2
+
+sources:
+  - name: tpch_sf1
+    description: "Source de données TPCH Scale Factor 1 - Base de données d'exemple pour la formation dbt"
+    database: SFSALESSHARED_SFC_SAMPLES_IE_SAMPLE_DATA
+    schema: TPCH_SF1
+    tables:
+      - name: customer
+        description: "Table des clients"

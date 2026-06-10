@@ -1,0 +1,44 @@
+{{
+    config(
+        database='DWH_DEV',
+        schema = 'dbo', 
+        alias = 'dim_customer_v1',
+        transient = false,
+        materialized = 'incremental',
+        incremental_strategy = 'merge',
+        unique_key = 'cle_client'
+    )
+}}
+
+-- Table dimension : Dimension Client
+with customer_metrics as (
+    select * from {{ ref('int_crm__customer_metrics') }}
+),
+
+final as (
+
+    select
+        cm.cle_client,
+        cm.nom_client,
+        cm.segment_marche,
+        cm.solde_compte,
+        -- Métriques calculées (depuis int_crm__customer_metrics et int_crm__customer_orders)
+        cm.nombre_total_commandes,
+        cm.valeur_totale_commandes,
+        cm.date_premiere_commande,
+        cm.date_derniere_commande,
+        cm.valeur_moyenne_commande,
+        -- Métriques calculées (depuis int_crm__customer_metrics et int_crm__customer_lineitems)
+        cm.nombre_commandes_avec_articles,
+        cm.nombre_total_articles_commandes,
+        cm.valeur_totale_articles,
+        cm.valeur_totale_articles_apres_remise,
+        -- Champs de métadonnées
+        current_timestamp as dbt_loaded_at
+    from customer_metrics cm
+
+)
+
+select * from final
+
+

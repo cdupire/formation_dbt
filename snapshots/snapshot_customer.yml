@@ -1,0 +1,17 @@
+# Commande à lancer : dbt snapshot --select snapshot_d_customer
+
+version: 2
+snapshots:
+  - name: snapshot_d_customer
+    relation: ref('stg_erp__customer')
+    description:  alimentation de la table d_customer en mode dimension à variation lente (SCD2)
+    config:
+      database: DWH_DEV
+      schema: dbo
+      alias: d_customer
+      transient: False
+      strategy: check 
+      unique_key: c_custkey
+      check_cols: ['c_name', 'c_address', 'c_nationkey', 'c_phone', 'c_acctbal', 'c_mktsegment']
+      invalidate_hard_deletes: true #Quand cette option est activée, DBT compare la table source (ton modèle stg_erp__customer) avec les lignes déjà snapshotées.
+      dbt_valid_to_current: "to_timestamp('2070-12-31')"

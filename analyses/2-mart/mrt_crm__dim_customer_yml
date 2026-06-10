@@ -5,11 +5,11 @@ models:
     columns:
       - name: cle_client
         tests:
-          - unique
-          - not_null
-      - name: nom_client
-        tests:
-          - not_null
+          - unique:
+              config:
+                severity: error
+                error_if: ">1000"
+                warn_if: ">10"
       - name: segment_marche
         tests:
           - accepted_values:

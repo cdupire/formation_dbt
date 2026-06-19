@@ -8,3 +8,6 @@ sources:
     tables:
       - name: customer
         description: "Table des clients"
+      - name : orders
+      - name: lineitem
+      

@@ -22,7 +22,7 @@ join_data as (
         co.segment_marche,
         co.solde_compte,
         co.nombre_total_commandes,
-        co.valeur_totale_commandes,
+        coalesce(co.valeur_totale_commandes, 0) as valeur_totale_commandes,
         co.date_premiere_commande,
         co.date_derniere_commande,
         co.valeur_moyenne_commande,

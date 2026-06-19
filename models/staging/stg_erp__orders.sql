@@ -1,3 +1,10 @@
+{{
+    config(
+        materialized='table',
+        database='TRAV_DWH_DEV',
+        schema='dbo'
+    )
+}}
 with 
 
 source as (

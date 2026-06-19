@@ -21,10 +21,10 @@ join_data as (
         c.c_mktsegment as segment_marche,
         c.c_acctbal as solde_compte,
         count(distinct o.o_orderkey) as nombre_total_commandes,
-        sum(o.o_totalprice) as valeur_totale_commandes,
+        coalesce(sum(o.o_totalprice), 0) as valeur_totale_commandes,
         min(o.o_orderdate) as date_premiere_commande,
         max(o.o_orderdate) as date_derniere_commande,
-        avg(o.o_totalprice) as valeur_moyenne_commande
+        coalesce(avg(o.o_totalprice), 0) as valeur_moyenne_commande
     from customers c
     left join orders o
         on c.c_custkey = o.o_custkey
